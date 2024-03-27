@@ -54,6 +54,25 @@ router.post('/edition/:idEdition/ouvrage', authenticateUser, authorizeAuteur, as
     }
 });
 
+router.get('/edition/:idEdition/ouvrages', async (req, res) => {
+    const idEdition = req.params.idEdition;
+
+    try {
+        const result = await db.query('SELECT get_ouvrages_by_edition($1)', [idEdition]);
+
+        // Vérifier si la fonction stockée a renvoyé des données
+        if (result.rowCount > 0) {
+            // Répondre avec les ouvrages au format JSON
+            res.status(200).json({ ouvrages: result.rows[0].get_ouvrages_by_edition });
+        } else {
+            res.status(404).json({ message: 'Aucun résultat trouvé pour cette édition' });
+        }
+    } catch (error) {
+        console.error('Error fetching ouvrages:', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+});
+
 
 
 module.exports = router;
