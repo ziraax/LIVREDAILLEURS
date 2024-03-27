@@ -50,7 +50,7 @@ router.post('/login/auteur', async (req, res) => {
         }
 
         // Créer un token JWT pour l'auteur
-        const token = jwt.sign({ id: auteur.idAuteur, role: 'auteur' }, jwtSecret);
+        const token = jwt.sign({ id: auteur.idauteur, role: 'auteur' }, jwtSecret);
 
         // Répondre avec le token JWT
         res.cookie('token', token, { httpOnly: true, sameSite: 'strict'}).sendStatus(200);
@@ -86,7 +86,8 @@ router.post('/login/etablissement', async (req, res) => {
         if(!passwordMatch) {
             return res.status(401).json({ message : 'Mot de passe incorrect' });
         }
-        const token = jwt.sign({ id: etablissement.idEtablissement, role: 'etablissement' }, jwtSecret);
+
+        const token = jwt.sign({ id: etablissement.idetablissement, role: 'etablissement' }, jwtSecret);
         res.cookie('token', token, { httpOnly: true, sameSite: 'strict'}).sendStatus(200);
     } catch (error) {
         console.error('Error during login of etablissement', error);
@@ -120,7 +121,7 @@ router.post('/login/commission-scolaire', async (req, res) => {
         if (!passwordMatch) {
             return res.status(401).json({ message: 'Mot de passe incorrect' });
         }
-        const token = jwt.sign({ id: commissionScolaire.idCommission, role: 'commission-scolaire' }, jwtSecret);
+        const token = jwt.sign({ id: commissionScolaire.idcommission, role: 'commission-scolaire' }, jwtSecret);
         res.cookie('token', token, { httpOnly: true, sameSite: 'strict'}).sendStatus(200);
     } catch (error) {
         console.error('Error during login of commission scolaire:', error);
