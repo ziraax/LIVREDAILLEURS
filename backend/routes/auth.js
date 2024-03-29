@@ -129,6 +129,83 @@ router.post('/login/commission-scolaire', async (req, res) => {
     }
 });
 
+// Route pour l'inscription d'un nouvel interprète
+router.post('/register/interprete', async (req, res) => {
+    const { nom, prenom, numTel, mail, mdp, langueSource, langueCible } = req.body;
+    try {
+        const hashedPassword = await bcrypt.hash(mdp, saltRounds);
+        await db.query('CALL sp_insert_interprete($1, $2, $3, $4, $5, $6, $7)', [nom, prenom, numTel, mail, hashedPassword, langueSource, langueCible]);
+        res.status(201).json({ message: 'Interprète inscrit avec succès' });
+    } catch (error) {
+        console.error('Error during registration of interprete:', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+});
+
+
+// Route pour l'authentification d'un interprète
+router.post('/login/interprete', async (req, res) => {
+    const { mail, mdp } = req.body;
+
+    try {
+        // Récupérer l'interprète par son email
+        const result = await db.query('SELECT * FROM Interprete WHERE mail = $1', [mail]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'Interprète non trouvé' });
+        }
+        const interprete = result.rows[0];
+
+        const passwordMatch = await bcrypt.compare(mdp, interprete.mdp);
+        if (!passwordMatch) {
+            return res.status(401).json({ message: 'Mot de passe incorrect' });
+        }
+
+        const token = jwt.sign({ id: interprete.idinterp, role: 'interprete' }, jwtSecret);
+        res.cookie('token', token, { httpOnly: true, sameSite: 'strict'}).sendStatus(200);
+    } catch (error) {
+        console.error('Error during login of interprete:', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+});
+
+// Route pour l'inscription d'un nouvel accompagnateur
+router.post('/register/accompagnateur', async (req, res) => {
+    const { nom, prenom, numTel, mail, mdp } = req.body;
+    try {
+        const hashedPassword = await bcrypt.hash(mdp, saltRounds);
+        await db.query('CALL sp_insert_accompagnateur($1, $2, $3, $4, $5)', [nom, prenom, numTel, mail, hashedPassword]);
+        res.status(201).json({ message: 'Accompagnateur inscrit avec succès' });
+    } catch (error) {
+        console.error('Error during registration of accompagnateur:', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+});
+
+
+router.post('/login/accompagnateur', async (req, res) => {
+    const { mail, mdp } = req.body;
+
+    try {
+        // Récupérer l'accompagnateur par son email
+        const result = await db.query('SELECT * FROM Accompagnateur WHERE mail = $1', [mail]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'Accompagnateur non trouvé' });
+        }
+        const accompagnateur = result.rows[0];
+
+        const passwordMatch = await bcrypt.compare(mdp, accompagnateur.mdp);
+        if (!passwordMatch) {
+            return res.status(401).json({ message: 'Mot de passe incorrect' });
+        }
+
+        const token = jwt.sign({ id: accompagnateur.idacc, role: 'accompagnateur' }, jwtSecret);
+        res.cookie('token', token, { httpOnly: true, sameSite: 'strict'}).sendStatus(200);
+    } catch (error) {
+        console.error('Error during login of accompagnateur:', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+});
+
 // Route pour la déconnexion
 router.get('/logout', (req, res) => {
     res.clearCookie('token');

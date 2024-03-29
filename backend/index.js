@@ -12,8 +12,14 @@ app.use(cookieParser());
 
 const authRoutes = require('./routes/auth');
 const editionRoutes = require('./routes/edition');
+const referentRoutes = require('./routes/referent')
+
+
+
 app.use(authRoutes);
 app.use(editionRoutes);
+app.use(referentRoutes);
+
 
 // Démarrer le serveur
 app.listen(PORT, () => {

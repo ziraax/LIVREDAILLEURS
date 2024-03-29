@@ -5,7 +5,7 @@ const db = require('../db/pool');
 const router = express.Router();
 
 
-const { authenticateUser, authorizeCommissionScolaire, authorizeAuteur} = require('../middleware/authMiddleware')
+const { authenticateUser, authorizeCommissionScolaire, authorizeAuteur, authorizeEtablissement} = require('../middleware/authMiddleware')
 
 router.get('/edition', async (req, res) => {
     try {
@@ -17,6 +17,7 @@ router.get('/edition', async (req, res) => {
     }
 })
 
+// Route pour inserer une edition
 router.post('/edition', authenticateUser, authorizeCommissionScolaire, async (req, res) => {
     const { annee, description, debutInscriptions, finInscriptions, debutVoeux, finVoeux, debutFestival, finFestival } = req.body;
     const idCommission = req.user.id;
@@ -32,6 +33,7 @@ router.post('/edition', authenticateUser, authorizeCommissionScolaire, async (re
     }
 });
 
+// Route pour proposer un ouvrage
 router.post('/edition/:idEdition/ouvrage', authenticateUser, authorizeAuteur, async (req, res) => {
     const { titre, classesConcernees, publicsCibles, description, langue } = req.body;
     const idAuteur = req.user.id; // Récupérer l'ID de l'auteur à partir du token JWT
@@ -54,6 +56,7 @@ router.post('/edition/:idEdition/ouvrage', authenticateUser, authorizeAuteur, as
     }
 });
 
+// Route pour obtenir tous les ouvrages d'une edition
 router.get('/edition/:idEdition/ouvrages', async (req, res) => {
     const idEdition = req.params.idEdition;
 
@@ -72,6 +75,77 @@ router.get('/edition/:idEdition/ouvrages', async (req, res) => {
         res.status(500).json({ message: 'Erreur serveur' });
     }
 });
+
+
+// Route pour soumettre un nouveau voeu pour une édition
+router.post('/edition/:idEdition/etablissement/:idEtablissement/voeux', authenticateUser, authorizeEtablissement, async (req, res) => {
+    const idEtablissement = req.params.idEtablissement;
+    const idEdition = req.params.idEdition;
+    const { idOuvrage, idRef, prio } = req.body;
+
+    try {
+        // Insérer le nouveau voeu dans la table Voeu
+        const result = await db.query(
+            'INSERT INTO Voeu (prio, idEtablissement, idOuvrage, idRef, idEdition) VALUES ($1, $2, $3, $4, $5) RETURNING idVoeu',
+            [prio, idEtablissement, idOuvrage, idRef, idEdition]
+        );
+        
+        const idVoeu = result.rows[0].idVoeu;
+
+        res.status(201).json({ message: 'Voeu soumis avec succès', idVoeu });
+    } catch (error) {
+        console.error('Error submitting voeu:', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+});
+
+// Route pour créer une intervention en tant que commission scolaire
+router.post('/edition/:idEdition/interventions', authenticateUser, authorizeCommissionScolaire, async (req, res) => {
+    const idEdition = req.params.idEdition;
+    const { etatInterv, dateInterv, hDebut, hFin, nbEleves, idAuteur, idInterp, idAcc, idEtablissement } = req.body;
+    
+    try {
+        const result = await db.query(
+            'INSERT INTO Intervention (etatInterv, dateInterv, hDebut, hFin, nbEleves, idAuteur, idInterp, idAcc, idEdition, idEtablissement) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING idInterv',
+            [etatInterv, dateInterv, hDebut, hFin, nbEleves, idAuteur, idInterp, idAcc, idEdition, idEtablissement]
+        );
+
+        const idInterv = result.rows[0].idInterv;
+        res.status(201).json({ message: 'Intervention créée avec succès', idInterv });
+    } catch (error) {
+        console.error('Error creating intervention:', error);
+        res.status(500).json({ message: 'Erreur serveur' })
+    }
+
+});
+
+
+// Route pour recuperer les interventions d'un établissement dans une édition donnée
+router.get('/edition/:idEdition/etablissements/:idEtablissement/interventions', authenticateUser, authorizeEtablissement, async (req, res) => {
+    const idEtablissement = req.params.idEtablissement;
+    const idEdition = req.params.idEdition;
+    try {
+        const interventions = await db.query('SELECT * FROM Intervention WHERE idEtablissement = $1 and idEdition = $2', [idEtablissement, idEdition]);
+        res.status(200).json({ interventions: interventions.rows });
+    } catch (error) {
+        console.error('Error fetching interventions for establishment:', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+});
+
+
+// Route pour recuperer toutes les interventions d'une edition
+router.get('/edition/:idEdition/interventions', authenticateUser, authorizeCommissionScolaire, async (req, res) => {
+    const idEdition = req.params.idEdition;
+    try {
+        const interventions = await db.query('SELECT * FROM Intervention WHERE idEdition = $1', [idEdition]);
+        res.status(200).json({ interventions: interventions.rows });
+    } catch (error) {
+        console.error('Error fetching all interventions:', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+});
+
 
 
 
