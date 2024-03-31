@@ -7,6 +7,7 @@ const router = express.Router();
 
 const { authenticateUser, authorizeCommissionScolaire, authorizeAuteur, authorizeEtablissement} = require('../middleware/authMiddleware')
 
+// Route pour get toutes les editions
 router.get('/edition', async (req, res) => {
     try {
         const editions = await db.query('SELECT * FROM Edition');
@@ -145,8 +146,6 @@ router.get('/edition/:idEdition/interventions', authenticateUser, authorizeCommi
         res.status(500).json({ message: 'Erreur serveur' });
     }
 });
-
-
 
 
 module.exports = router;

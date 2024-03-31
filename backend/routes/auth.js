@@ -53,7 +53,7 @@ router.post('/login/auteur', async (req, res) => {
         const token = jwt.sign({ id: auteur.idauteur, role: 'auteur' }, jwtSecret);
 
         // Répondre avec le token JWT
-        res.cookie('token', token, { httpOnly: true, sameSite: 'strict'}).sendStatus(200);
+        res.cookie('token', token, { httpOnly: true, sameSite: 'strict'}).json({ idauteur : auteur.idauteur });
     } catch (error) {
         console.error('Error during login:', error);
         res.status(500).json({ message: 'Erreur serveur' });
@@ -88,12 +88,39 @@ router.post('/login/etablissement', async (req, res) => {
         }
 
         const token = jwt.sign({ id: etablissement.idetablissement, role: 'etablissement' }, jwtSecret);
-        res.cookie('token', token, { httpOnly: true, sameSite: 'strict'}).sendStatus(200);
+        res.cookie('token', token, { httpOnly: true, sameSite: 'strict'}).json({ idetablissement : etablissement.idetablissement });
     } catch (error) {
         console.error('Error during login of etablissement', error);
         res.status(500).json({ message: 'Erreur serveur' });
     }
 });
+// Route to get information of an establishment
+router.get('/etablissement/:id', async (req, res) => {
+    const etablissementId = req.params.id; // Parse the string ID to an integer
+    
+    // Check if etablissementId is a valid integer
+    if (isNaN(etablissementId)) {
+        return res.status(400).json({ message: 'Invalid etablissement ID' });
+    }
+
+    try {
+        // Fetch establishment information from the database
+        const result = await db.query('SELECT * FROM Etablissement WHERE idetablissement = $1', [etablissementId]);
+
+        // Check if establishment exists
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'Etablissement not found' });
+        }
+
+        // Send establishment information as response
+        const etablissement = result.rows[0];
+        res.status(200).json(etablissement);
+    } catch (error) {
+        console.error('Error fetching establishment information:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 
 // Route pour l'inscription de la commission scolaire
 router.post('/register/commission-scolaire', async (req, res) => {
@@ -122,7 +149,7 @@ router.post('/login/commission-scolaire', async (req, res) => {
             return res.status(401).json({ message: 'Mot de passe incorrect' });
         }
         const token = jwt.sign({ id: commissionScolaire.idcommission, role: 'commission-scolaire' }, jwtSecret);
-        res.cookie('token', token, { httpOnly: true, sameSite: 'strict'}).sendStatus(200);
+        res.cookie('token', token, { httpOnly: true, sameSite: 'strict'}).json({ idcommission : commissionScolaire.idcommission });
     } catch (error) {
         console.error('Error during login of commission scolaire:', error);
         res.status(500).json({ message: 'Erreur serveur' });
@@ -161,7 +188,7 @@ router.post('/login/interprete', async (req, res) => {
         }
 
         const token = jwt.sign({ id: interprete.idinterp, role: 'interprete' }, jwtSecret);
-        res.cookie('token', token, { httpOnly: true, sameSite: 'strict'}).sendStatus(200);
+        res.cookie('token', token, { httpOnly: true, sameSite: 'strict'}).json({ idinterprete : interprete.idinterp });
     } catch (error) {
         console.error('Error during login of interprete:', error);
         res.status(500).json({ message: 'Erreur serveur' });
@@ -199,7 +226,7 @@ router.post('/login/accompagnateur', async (req, res) => {
         }
 
         const token = jwt.sign({ id: accompagnateur.idacc, role: 'accompagnateur' }, jwtSecret);
-        res.cookie('token', token, { httpOnly: true, sameSite: 'strict'}).sendStatus(200);
+        res.cookie('token', token, { httpOnly: true, sameSite: 'strict'}).json({ idaccompagnateur : accompagnateur.idacc });
     } catch (error) {
         console.error('Error during login of accompagnateur:', error);
         res.status(500).json({ message: 'Erreur serveur' });
