@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const EtablissementRegisterForm = () => {
+const CommissionScolaireRegisterForm = () => {
   const [formData, setFormData] = useState({
     identifiant: '',
     mdp: '',
-    nom: '',
-    type: '',
-    num_tel: '',
     mail: '',
-    adresse: '',
-    localisation: ''
+    prenom_resp: '',
+    nom_resp: '',
+    num_tel: '',
+    adresse: ''
   });
   const [error, setError] = useState('');
 
@@ -22,7 +21,7 @@ const EtablissementRegisterForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'http://localhost:3000/register/etablissement',
+        'http://localhost:3000/register/commission-scolaire',
         formData,
         {
           headers: {
@@ -36,10 +35,9 @@ const EtablissementRegisterForm = () => {
     }
   };
 
-
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-xl">
-      <h2 className="text-2xl font-bold mb-4 text-center">Inscription Etablissement</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">Inscription Commission Scolaire</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -58,30 +56,29 @@ const EtablissementRegisterForm = () => {
           className="block w-full p-2 mb-4 border border-gray-300 rounded-md"
         />
         <input
+          type="email"
+          name="mail"
+          value={formData.mail}
+          onChange={handleChange}
+          placeholder="Email"
+          className="block w-full p-2 mb-4 border border-gray-300 rounded-md"
+        />
+        <input
           type="text"
-          name="nom"
-          value={formData.nom}
+          name="prenom_resp"
+          value={formData.prenom_resp}
+          onChange={handleChange}
+          placeholder="Prenom"
+          className="block w-full p-2 mb-4 border border-gray-300 rounded-md"
+        />
+        <input
+          type="text"
+          name="nom_resp"
+          value={formData.nom_resp}
           onChange={handleChange}
           placeholder="Nom"
           className="block w-full p-2 mb-4 border border-gray-300 rounded-md"
         />
-        <select
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
-            className="block w-full p-2 mb-4 border border-gray-300 rounded-md"
-        >
-            <option value="">Type de votre établissement</option>
-            <option value="université">Université</option>
-            <option value="lycée général">Lycée général</option>
-            <option value="lycée professionnel">Lycée professionnel</option>
-            <option value="collège">Collège</option>
-            <option value="école primaire">École primaire</option>
-            <option value="école maternelle">École maternelle</option>
-            <option value="médico-sociaux">Médico-sociaux</option>
-            <option value="pénitentiaire">Pénitentiaire</option>
-        </select>
-
         <input
           type="text"
           name="num_tel"
@@ -91,27 +88,11 @@ const EtablissementRegisterForm = () => {
           className="block w-full p-2 mb-4 border border-gray-300 rounded-md"
         />
         <input
-          type="email"
-          name="mail"
-          value={formData.mail}
-          onChange={handleChange}
-          placeholder="Adresse email"
-          className="block w-full p-2 mb-4 border border-gray-300 rounded-md"
-        />
-        <input
           type="text"
           name="adresse"
           value={formData.adresse}
           onChange={handleChange}
-          placeholder="Adresse"
-          className="block w-full p-2 mb-4 border border-gray-300 rounded-md"
-        />
-        <input
-          type="text"
-          name="localisation"
-          value={formData.localisation}
-          onChange={handleChange}
-          placeholder="Localisation"
+          placeholder="Addresse"
           className="block w-full p-2 mb-4 border border-gray-300 rounded-md"
         />
         <button
@@ -126,4 +107,4 @@ const EtablissementRegisterForm = () => {
   );
 };
 
-export default EtablissementRegisterForm;
+export default CommissionScolaireRegisterForm;

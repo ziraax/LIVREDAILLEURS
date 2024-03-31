@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const EtablissementRegisterForm = () => {
+const AuteurRegisterForm = () => {
   const [formData, setFormData] = useState({
     identifiant: '',
     mdp: '',
     nom: '',
-    type: '',
+    prenom: '',
     num_tel: '',
     mail: '',
     adresse: '',
-    localisation: ''
+    localisation: '',
+    langues: ''
   });
   const [error, setError] = useState('');
 
@@ -22,7 +23,7 @@ const EtablissementRegisterForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'http://localhost:3000/register/etablissement',
+        'http://localhost:3000/register/auteur',
         formData,
         {
           headers: {
@@ -39,7 +40,7 @@ const EtablissementRegisterForm = () => {
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-xl">
-      <h2 className="text-2xl font-bold mb-4 text-center">Inscription Etablissement</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">Inscription</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -54,7 +55,7 @@ const EtablissementRegisterForm = () => {
           name="mdp"
           value={formData.mdp}
           onChange={handleChange}
-          placeholder="Mot de passe"
+          placeholder="Password"
           className="block w-full p-2 mb-4 border border-gray-300 rounded-md"
         />
         <input
@@ -65,23 +66,14 @@ const EtablissementRegisterForm = () => {
           placeholder="Nom"
           className="block w-full p-2 mb-4 border border-gray-300 rounded-md"
         />
-        <select
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
-            className="block w-full p-2 mb-4 border border-gray-300 rounded-md"
-        >
-            <option value="">Type de votre établissement</option>
-            <option value="université">Université</option>
-            <option value="lycée général">Lycée général</option>
-            <option value="lycée professionnel">Lycée professionnel</option>
-            <option value="collège">Collège</option>
-            <option value="école primaire">École primaire</option>
-            <option value="école maternelle">École maternelle</option>
-            <option value="médico-sociaux">Médico-sociaux</option>
-            <option value="pénitentiaire">Pénitentiaire</option>
-        </select>
-
+        <input
+          type="text"
+          name="prenom"
+          value={formData.prenom}
+          onChange={handleChange}
+          placeholder="Prénom"
+          className="block w-full p-2 mb-4 border border-gray-300 rounded-md"
+        />
         <input
           type="text"
           name="num_tel"
@@ -114,6 +106,14 @@ const EtablissementRegisterForm = () => {
           placeholder="Localisation"
           className="block w-full p-2 mb-4 border border-gray-300 rounded-md"
         />
+        <input
+          type="text"
+          name="langues"
+          value={formData.langues}
+          onChange={handleChange}
+          placeholder="Langues"
+          className="block w-full p-2 mb-4 border border-gray-300 rounded-md"
+        />
         <button
           type="submit"
           className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700"
@@ -126,4 +126,4 @@ const EtablissementRegisterForm = () => {
   );
 };
 
-export default EtablissementRegisterForm;
+export default AuteurRegisterForm;

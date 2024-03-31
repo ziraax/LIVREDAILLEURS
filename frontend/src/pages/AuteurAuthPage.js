@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import EtablissementRegisterForm from '../components/EtablissementLoginForm';
-import EtablissementLoginForm from '../components/EtablissementRegisterForm';
+import AuteurRegisterForm from '../components/AuteurRegisterForm';
+import AuteurLoginForm from '../components/AuteurLoginForm';
 
-const EtablissementAuthPage = () => {
+const AuteurAuthPage = () => {
   const [isRegisterVisible, setRegisterVisible] = useState(false);
 
   const toggleFormVisibility = () => {
@@ -11,12 +11,12 @@ const EtablissementAuthPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <h2 className="text-3xl font-bold mb-4">Authentication Etablissement</h2>
+      <h2 className="text-3xl font-bold mb-4">Auteur Authentication</h2>
       {/* Conditional rendering based on isRegisterVisible state */}
       {isRegisterVisible ? (
-        <EtablissementRegisterForm />
+        <AuteurRegisterForm />
       ) : (
-        <EtablissementLoginForm />
+        <AuteurLoginForm />
       )}
       {/* Button to toggle between register and login forms */}
       <button
@@ -29,4 +29,4 @@ const EtablissementAuthPage = () => {
   );
 };
 
-export default EtablissementAuthPage;
+export default AuteurAuthPage;

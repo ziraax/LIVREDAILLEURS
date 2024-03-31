@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Navigate, useNavigate } from 'react-router-dom';
 
-const EtablissementLoginForm = () => {
+const AuteurLoginForm = () => {
   const [formData, setFormData] = useState({
     identifiant: '',
     mdp: ''
@@ -17,11 +17,11 @@ const EtablissementLoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/login/etablissement', formData);
+      const response = await axios.post('http://localhost:3000/login/auteur', formData);
       console.log("response data", response.data);
-      const { idetablissement } = response.data;
+      const { idauteur } = response.data;
       setError('');
-      navigate(`/etablissementdashboard/${idetablissement}`); // Redirect to EtablissementDashboard
+      navigate(`/auteurdashboard/${idauteur}`); // Redirect to AuteurDashboard
     } catch (error) {
       setError(error.response.data.message);
     }
@@ -68,4 +68,4 @@ const EtablissementLoginForm = () => {
   );
 };
 
-export default EtablissementLoginForm;
+export default AuteurLoginForm;

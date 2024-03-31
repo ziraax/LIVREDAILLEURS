@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const EtablissementLoginForm = () => {
+const CommissionScolaireLoginForm = () => {
   const [formData, setFormData] = useState({
     identifiant: '',
     mdp: ''
@@ -17,19 +17,20 @@ const EtablissementLoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/login/etablissement', formData);
+      const response = await axios.post('http://localhost:3000/login/commission-scolaire', formData, { withCredentials: true });
       console.log("response data", response.data);
-      const { idetablissement } = response.data;
+      const { idcommission } = response.data;
       setError('');
-      navigate(`/etablissementdashboard/${idetablissement}`); // Redirect to EtablissementDashboard
+      navigate(`/commissionscolairedashboard/${idcommission}`); // Redirect to CommissionScolaireDashboard
     } catch (error) {
+      console.log(error)
       setError(error.response.data.message);
     }
   };
 
   return (
     <div className="bg-gray-100 p-6 rounded-lg shadow-md">
-      <h3 className="text-xl font-bold mb-4">Connexion</h3>
+      <h3 className="text-xl font-bold mb-4">Login</h3>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -68,4 +69,4 @@ const EtablissementLoginForm = () => {
   );
 };
 
-export default EtablissementLoginForm;
+export default CommissionScolaireLoginForm;

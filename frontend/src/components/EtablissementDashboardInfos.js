@@ -5,7 +5,7 @@ import React from 'react';
 const EtablissementDashboardInfos = ({ etablissementData }) => {
   return (
     <div className="bg-white shadow-md rounded-lg overflow-hidden">
-      <h1 className="text-2xl font-bold bg-gray-800 text-white p-4">Information établissement</h1>
+      <h1 className="text-2xl font-bold bg-gray-800 text-white p-4">Informations établissement</h1>
       <div className="p-4 grid grid-cols-2 gap-4">
         <div>
           <p className="font-bold">Identifiant :</p>

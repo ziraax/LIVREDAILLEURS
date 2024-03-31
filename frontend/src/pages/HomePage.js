@@ -34,7 +34,7 @@ const HomePage = () => {
             <div className="flex flex-col items-center justify-center py-12">
                 <h2 className="text-3xl font-semibold mb-6">Qui êtes-vous ?</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                    <Link to="/commission-scolaire">
+                    <Link to="/commissionscolaire">
                         <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg">
                             Commission Scolaire
                         </button>
