@@ -6,8 +6,7 @@ import PropositionOuvrageForm from '../components/PropositionOuvrageForm';
 import EditionsList from '../components/EditionsList';
 import OuvragesListAuteur from '../components/OuvragesListAuteur';
 import Footer from '../components/Footer';
-
-
+import Navbar from '../components/Navbar';
 
 const AuteurDashboard = () => {
   const [auteurData, setAuteurData] = useState(null);
@@ -35,9 +34,11 @@ const AuteurDashboard = () => {
   }, [idAuteur]);
 
   return (
-    <div className="container mx-auto mt-8">
+    <div className="container mx-auto">
       {auteurData ? (
         <>
+          <Navbar />
+          <br></br>          <br></br>   
           <AuteurDashboardInfos auteurData={auteurData} />
           <EditionsList />
           <OuvragesListAuteur idAuteur={idAuteur}/>

@@ -10,7 +10,7 @@ import InterpreteAddForm from '../components/InterpreteAddForm';
 import InterpretesAccompagnateursList from '../components/InterpretesAccompagnateursList';
 import CommissionScolaireProposerIntervention from '../components/CommissionScolaireProposerIntervention';
 import Footer from '../components/Footer';
-
+import Navbar from '../components/Navbar';
 
 
 const CommissionScolaireDashboard = () => {
@@ -36,6 +36,8 @@ const CommissionScolaireDashboard = () => {
     <div className="container mx-auto">
       {commissionScolaireData ? (
         <>
+          <Navbar />
+          <br></br>          <br></br>   
           <CommissionScolaireDashboardInfos commissionScolaireData={commissionScolaireData} />
         
           <EditionsList />
