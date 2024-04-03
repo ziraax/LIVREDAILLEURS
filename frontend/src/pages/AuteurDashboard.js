@@ -5,6 +5,8 @@ import AuteurDashboardInfos from '../components/AuteurDashboardInfos';
 import PropositionOuvrageForm from '../components/PropositionOuvrageForm';
 import EditionsList from '../components/EditionsList';
 import OuvragesListAuteur from '../components/OuvragesListAuteur';
+import Footer from '../components/Footer';
+
 
 
 const AuteurDashboard = () => {
@@ -40,6 +42,10 @@ const AuteurDashboard = () => {
           <EditionsList />
           <OuvragesListAuteur idAuteur={idAuteur}/>
           <PropositionOuvrageForm />
+
+          
+          <br></br>          <br></br>          <br></br>
+          <Footer />
         </>
       ) : (
         <p>Loading...</p>

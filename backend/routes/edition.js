@@ -121,6 +121,68 @@ router.post('/edition/:idEdition/etablissement/:idEtablissement/voeux', authenti
     }
 });
 
+// Route pour récupérer tous les voeux pour toutes les éditions avec les détails du référent
+router.get('/voeux', authenticateUser, authorizeCommissionScolaire, async (req, res) => {
+    try {
+        // Récupérer tous les voeux pour toutes les éditions avec les détails du référent
+        const result = await db.query(
+            `SELECT Voeu.*, 
+                    Referent.nom AS nomRef, Referent.prenom AS prenomRef, Referent.mail AS mailRef, Referent.numtel AS numtelRef,
+                    Edition.description AS descriptionEdition, Edition.debutinscriptions, Edition.fininscriptions, 
+                    Edition.debutvoeux, Edition.finvoeux, Edition.debutfestival, Edition.finfestival,
+                    Etablissement.*,
+                    Auteur.nom AS nomAuteur, Auteur.prenom AS prenomAuteur, Auteur.numtel AS telAuteur, Auteur.idauteur as idAuteur,
+                    Ouvrage.*
+            FROM Voeu
+            INNER JOIN Edition ON Voeu.idEdition = Edition.idEdition
+            INNER JOIN Referent ON Voeu.idRef = Referent.idRef
+            INNER JOIN Etablissement ON Voeu.idEtablissement = Etablissement.idEtablissement
+            INNER JOIN Ouvrage ON Voeu.idOuvrage = Ouvrage.idOuvrage
+            INNER JOIN Ouvrage_Auteur ON Ouvrage.idOuvrage = Ouvrage_Auteur.idOuvrage
+            INNER JOIN Auteur ON Ouvrage_Auteur.idAuteur = Auteur.idAuteur;`
+        );
+        const voeux = result.rows;
+        
+        res.status(200).json({ voeux });
+    } catch (error) {
+        console.error('Error fetching voeux:', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+});
+
+// Route pour modifier l'état d'un voeu
+router.post('/voeu/:idVoeu/etat', authenticateUser, authorizeCommissionScolaire, async (req, res) => {
+    const idVoeu = req.params.idVoeu;
+    const { etatVoeu } = req.body;
+
+    try {
+        // état du voeu est valide
+        const etatsVoeuValides = ['déposé', 'validé', 'refusé'];
+        if (!etatsVoeuValides.includes(etatVoeu)) {
+            return res.status(400).json({ message: "L'état du voeu est invalide" });
+        }
+
+        // Mettez à jour l'état du voeu dans la base de données
+        const result = await db.query(
+            'UPDATE Voeu SET etat = $1 WHERE idVoeu = $2',
+            [etatVoeu, idVoeu]
+        );
+
+        // Vérifiez si le voeu a été mis à jour avec succès
+        if (result.rowCount === 0) {
+            return res.status(404).json({ message: "Le voeu spécifié n'a pas été trouvé" });
+        }
+
+        // Répondez avec un message de succès
+        res.status(200).json({ message: 'État du voeu modifié avec succès' });
+    } catch (error) {
+        console.error('Error updating voeu state:', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+});
+
+
+
 // Route pour créer une intervention en tant que commission scolaire
 router.post('/edition/:idEdition/interventions', authenticateUser, authorizeCommissionScolaire, async (req, res) => {
     const idEdition = req.params.idEdition;
@@ -147,7 +209,20 @@ router.get('/edition/:idEdition/etablissements/:idEtablissement/interventions', 
     const idEtablissement = req.params.idEtablissement;
     const idEdition = req.params.idEdition;
     try {
-        const interventions = await db.query('SELECT * FROM Intervention WHERE idEtablissement = $1 and idEdition = $2', [idEtablissement, idEdition]);
+        const interventions = await db.query(`
+            SELECT 
+                Intervention.*,
+                Auteur.nom AS nomAuteur, Auteur.prenom AS prenomAuteur,
+                Interprete.nom AS nomInterprete, Interprete.prenom AS prenomInterprete,
+                Accompagnateur.nom AS nomAccompagnateur, Accompagnateur.prenom AS prenomAccompagnateur,
+                Edition.annee AS anneeEdition, Edition.description AS descEdition
+            FROM Intervention
+            LEFT JOIN Auteur ON Intervention.idAuteur = Auteur.idAuteur
+            LEFT JOIN Interprete ON Intervention.idInterp = Interprete.idInterp
+            LEFT JOIN Accompagnateur ON Intervention.idAcc = Accompagnateur.idAcc
+            LEFT JOIN Edition ON Intervention.idEdition = Edition.idEdition
+            WHERE Intervention.idEtablissement = $1 AND Intervention.idEdition = $2
+        `, [idEtablissement, idEdition]);
         res.status(200).json({ interventions: interventions.rows });
     } catch (error) {
         console.error('Error fetching interventions for establishment:', error);

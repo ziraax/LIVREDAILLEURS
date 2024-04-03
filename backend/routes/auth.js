@@ -296,6 +296,32 @@ router.post('/login/accompagnateur', async (req, res) => {
     }
 });
 
+// Route pour récupérer les accompagnateurs
+router.get('/accompagnateurs', authenticateUser, authorizeCommissionScolaire, async (req, res) => {
+    try {
+        const result = await db.query('SELECT * FROM Accompagnateur');
+        const accompagnateurs = result.rows;
+        res.status(200).json({ accompagnateurs });
+    } catch (error) {
+        console.error('Error fetching accompagnateurs:', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+});
+
+// Route pour récupérer les interprètes
+router.get('/interpretes', authenticateUser, authorizeCommissionScolaire, async (req, res) => {
+    try {
+        const result = await db.query('SELECT * FROM Interprete');
+        const interpretes = result.rows;
+        res.status(200).json({ interpretes });
+    } catch (error) {
+        console.error('Error fetching interpretes:', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+});
+
+
+
 // Route pour la déconnexion
 router.get('/logout', (req, res) => {
     res.clearCookie('token');

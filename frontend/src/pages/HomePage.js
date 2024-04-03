@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import Footer from '../components/Footer';
 
 const HomePage = () => {
     return (
@@ -25,7 +25,7 @@ const HomePage = () => {
                         Explorez les fonctionnalités uniques de Livre d'Ailleurs pour enrichir votre expérience de lecture.
                     </p>
                     <p className="text-lg md:text-xl mb-8 text-center">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Le projet consiste à créer une application web pour gérer le festival littéraire international "Livres D’ailleurs". Cette application permettra l'inscription et l'authentification des auteurs et des établissements participants, ainsi que la planification automatique des interventions des auteurs dans les établissements. Elle permettra également la soumission de vœux pour les ouvrages à présenter, la génération de statistiques après chaque édition, et la conservation des informations pour les éditions futures.
                     </p>
                 </div>
             </div>
@@ -83,7 +83,7 @@ const HomePage = () => {
                     </ul>
                 </div>
             </div>
-
+            <Footer />
         </div>
     );
 };

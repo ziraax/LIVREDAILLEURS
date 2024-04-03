@@ -5,6 +5,9 @@ import EtablissementDashboardInfos from '../components/EtablissementDashboardInf
 import PropositionVoeuxForm from '../components/PropositionVoeuxForm';
 import ReferentsList from '../components/ReferentsList';
 import AddReferentForm from '../components/ReferentAddForm';
+import InterventionsList from '../components/InterventionsList';
+import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
 
 const EtablissementDashboard = () => {
   const [etablissementData, setEtablissementData] = useState(null);
@@ -32,16 +35,25 @@ const EtablissementDashboard = () => {
   }, [idEtablissement]);
 
   return (
-    <div className="container mx-auto mt-8">
+    <div className="container mx-auto">
       {etablissementData ? (
         <>
+          <Navbar />
+          <br></br>          <br></br>   
+
           <EtablissementDashboardInfos etablissementData={etablissementData} />
           <br></br>
           <ReferentsList idEtablissement={idEtablissement} />
-          <br></br>
           <AddReferentForm idEtablissement={idEtablissement} />
-          <PropositionVoeuxForm idEtablissement={idEtablissement} />
 
+          <br></br>
+
+          <InterventionsList idEtablissement={idEtablissement} />
+
+          <PropositionVoeuxForm idEtablissement={idEtablissement} />
+          
+          <br></br>          <br></br>          <br></br>
+          <Footer />
         </>
       ) : (
         <p>Loading...</p>
