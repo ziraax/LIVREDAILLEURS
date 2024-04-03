@@ -77,6 +77,27 @@ router.get('/edition/:idEdition/ouvrages', async (req, res) => {
     }
 });
 
+// TODO : transformer en procédure
+// Route pour récupérer les ouvrages d'un auteur spécifique avec l'édition correspondante
+router.get('/auteur/:idAuteur/ouvrages', authenticateUser, authorizeAuteur, async (req, res) => {
+    const idAuteur = req.params.idAuteur;
+    try {
+        const ouvrages = await db.query(`
+            SELECT o.*, e.* 
+            FROM Ouvrage o 
+            JOIN Ouvrage_Edition oe ON o.idOuvrage = oe.idOuvrage 
+            JOIN Edition e ON oe.idEdition = e.idEdition 
+            WHERE o.idOuvrage IN (SELECT idOuvrage FROM Ouvrage_Auteur WHERE idAuteur = $1)
+        `, [idAuteur]);
+
+        res.status(200).json(ouvrages.rows);
+    } catch (error) {
+        console.error('Error fetching ouvrages for author:', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+});
+
+
 
 // Route pour soumettre un nouveau voeu pour une édition
 router.post('/edition/:idEdition/etablissement/:idEtablissement/voeux', authenticateUser, authorizeEtablissement, async (req, res) => {

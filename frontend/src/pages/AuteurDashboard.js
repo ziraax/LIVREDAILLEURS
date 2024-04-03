@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import AuteurDashboardInfos from '../components/AuteurDashboardInfos';
 import PropositionOuvrageForm from '../components/PropositionOuvrageForm';
 import EditionsList from '../components/EditionsList';
+import OuvragesListAuteur from '../components/OuvragesListAuteur';
 
 
 const AuteurDashboard = () => {
@@ -37,6 +38,7 @@ const AuteurDashboard = () => {
         <>
           <AuteurDashboardInfos auteurData={auteurData} />
           <EditionsList />
+          <OuvragesListAuteur idAuteur={idAuteur}/>
           <PropositionOuvrageForm />
         </>
       ) : (
