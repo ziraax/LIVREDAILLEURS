@@ -21,7 +21,7 @@ const CommissionScolaireEditionForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        console.log("cookies", document.cookie);
+      console.log("cookies", document.cookie);
       const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
       console.log("token", token);
       const response = await axios.post(

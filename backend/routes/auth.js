@@ -10,6 +10,14 @@ const router = express.Router();
 const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS);
 const jwtSecret = process.env.JWT_SECRET;
 
+const { authenticateUser, authorizeCommissionScolaire, authorizeAuteur, authorizeEtablissement} = require('../middleware/authMiddleware')
+
+
+//Route pour check l'user id et return les user info
+router.get('/auth/check', authenticateUser, (req, res) => {
+    res.status(200).json({ id: req.user.id, role: req.user.role })
+})
+
 // Route pour l'inscription des auteurs
 router.post('/register/auteur', async (req, res) => {
     const { identifiant, mdp, nom, prenom, num_tel, mail, adresse, localisation, langues } = req.body;

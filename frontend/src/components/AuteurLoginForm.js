@@ -17,7 +17,7 @@ const AuteurLoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/login/auteur', formData);
+      const response = await axios.post('http://localhost:3000/login/auteur', formData, { withCredentials: true });
       console.log("response data", response.data);
       const { idauteur } = response.data;
       setError('');
