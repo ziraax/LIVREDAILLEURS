@@ -123,7 +123,7 @@ router.post('/login/etablissement', async (req, res) => {
         }
 
         const token = jwt.sign({ id: etablissement.idetablissement, role: 'etablissement' }, jwtSecret);
-        res.cookie('token', token, { httpOnly: true, sameSite: 'strict'}).json({ idetablissement : etablissement.idetablissement });
+        res.cookie('token', token, { httpOnly: false, sameSite: 'Lax'}).json({ idetablissement : etablissement.idetablissement });
     } catch (error) {
         console.error('Error during login of etablissement', error);
         res.status(500).json({ message: 'Erreur serveur' });

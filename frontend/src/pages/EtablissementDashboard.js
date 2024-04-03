@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import EtablissementDashboardInfos from '../components/EtablissementDashboardInfos';
+import PropositionVoeuxForm from '../components/PropositionVoeuxForm';
+import ReferentsList from '../components/ReferentsList';
+import AddReferentForm from '../components/ReferentAddForm';
 
 const EtablissementDashboard = () => {
   const [etablissementData, setEtablissementData] = useState(null);
@@ -31,7 +34,15 @@ const EtablissementDashboard = () => {
   return (
     <div className="container mx-auto mt-8">
       {etablissementData ? (
-        <EtablissementDashboardInfos etablissementData={etablissementData} />
+        <>
+          <EtablissementDashboardInfos etablissementData={etablissementData} />
+          <br></br>
+          <ReferentsList idEtablissement={idEtablissement} />
+          <br></br>
+          <AddReferentForm idEtablissement={idEtablissement} />
+          <PropositionVoeuxForm idEtablissement={idEtablissement} />
+
+        </>
       ) : (
         <p>Loading...</p>
       )}

@@ -17,7 +17,7 @@ const EtablissementLoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/login/etablissement', formData);
+      const response = await axios.post('http://localhost:3000/login/etablissement', formData, { withCredentials: true });
       console.log("response data", response.data);
       const { idetablissement } = response.data;
       setError('');

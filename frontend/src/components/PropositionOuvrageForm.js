@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const EditionSelectionForm = () => {
+const PropositionOuvrageForm = () => {
   const [editions, setEditions] = useState([]);
   const [selectedEditionId, setSelectedEditionId] = useState('');
   const [ouvrageDetails, setOuvrageDetails] = useState({
@@ -123,4 +123,4 @@ const EditionSelectionForm = () => {
   );
 };
 
-export default EditionSelectionForm;
+export default PropositionOuvrageForm;
