@@ -90,9 +90,9 @@ CREATE TABLE Edition(
     finVoeux DATE NOT NULL,
     debutFestival DATE NOT NULL,
     finFestival DATE NOT NULL,
-    idStatsInterv INTEGER REFERENCES StatsInterventions, -- l'id à le même nom dans les 2 tables donc pas besoin de "REFERENCES StatsInterventions (idStatsInterv)"
-    idStatsCampagneVoeux INTEGER REFERENCES StatsCampagneVoeux, -- même chose pour toutes les clés étrangères qui suiveront
-    idStatsOuvrages INTEGER REFERENCES StatsOuvrages,
+    idStatsI INTEGER REFERENCES StatsInterventions, -- l'id à le même nom dans les 2 tables donc pas besoin de "REFERENCES StatsInterventions (idStatsInterv)"
+    idStatsCV INTEGER REFERENCES StatsCampagneVoeux, -- même chose pour toutes les clés étrangères qui suiveront
+    idStatsO INTEGER REFERENCES StatsOuvrages,
 	idCommission INTEGER REFERENCES CommissionScolaire,
     PRIMARY KEY (idEdition),
     CHECK (debutInscritpions < finInscriptions),
