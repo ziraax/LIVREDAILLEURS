@@ -2,11 +2,8 @@
 
 
 -- Un auteur qui participe à l’édition est nécessairement vérifié et veutParticiper : Statique Forte
--- Malheureusement nous n'avons pas eu le temps d'inclure fonctionnalité de verification et de
--- déclaration de volonté de participer dans le site, on présente tout de même l'implémentation de la contrainte
--- mais le trigger ne doit pas run pour que le site fonctionne. 
 
-/*
+
 CREATE OR REPLACE FUNCTION tgParticipationAuteur() RETURNS TRIGGER AS $$
 DECLARE
     v_verifie BOOLEAN;
@@ -30,16 +27,12 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE TRIGGER tgParticipationAuteur 
     BEFORE INSERT ON Auteur_Edition
     FOR EACH ROW EXECUTE PROCEDURE tgParticipationAuteur();
- */
 
 
 
 -- Un établissement qui participe à l’édition est nécessairement vérifié et veutParticiper : Statique Forte
--- Malheureusement nous n'avons pas eu le temps d'inclure fonctionnalité de verification et de
--- déclaration de volonté de participer dans le site, on présente tout de même l'implémentation de la contrainte
--- mais le trigger ne doit pas run pour que le site fonctionne. 
 
-/*
+
 CREATE OR REPLACE FUNCTION tgParticipationEtab() RETURNS TRIGGER AS $$
 DECLARE
     v_verifie BOOLEAN;
@@ -63,7 +56,6 @@ CREATE OR REPLACE TRIGGER tgParticipationEtab
     BEFORE INSERT ON Etablissement_Edition
     FOR EACH ROW EXECUTE PROCEDURE tgParticipationEtab();
 
-*/
 
 
 -- L’état d’un voeu (Voeu.état) ne peut pas passer de “refusé” à “validé” ; ni passer de “refusé” ou “validé” à “déposé” : Dynamique Forte
@@ -168,7 +160,6 @@ CREATE OR REPLACE TRIGGER tgVeutParticiperEtab
 
 
 -- Les voeux sont obligatoirement soumis entre les dates Edition.debutVoeux et Edition.finVoeux : Statique Forte
-
 
 CREATE OR REPLACE FUNCTION tgSoumissionVoeu() RETURNS TRIGGER AS $$
 DECLARE

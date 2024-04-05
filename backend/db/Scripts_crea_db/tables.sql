@@ -54,7 +54,6 @@ CREATE TABLE CommissionScolaire(
 DROP TABLE IF EXISTS Edition;
 CREATE TABLE Edition(
     idEdition SERIAL,
-    editionNum INTEGER CHECK (editionNum > 0), -- à voir si on supprime pas (inutile)
     annee INTEGER NOT NULL UNIQUE CHECK (annee > 2000 AND annee < 2100),
     description TEXT NULL,
     debutInscritpions DATE NOT NULL,
@@ -63,8 +62,8 @@ CREATE TABLE Edition(
     finVoeux DATE NOT NULL,
     debutFestival DATE NOT NULL,
     finFestival DATE NOT NULL,
-    idStatsI INTEGER REFERENCES StatsInterventions, -- l'id à le même nom dans les 2 tables donc pas besoin de "REFERENCES StatsInterventions (idStatsInterv)"
-    idStatsCV INTEGER REFERENCES StatsCampagneVoeux, -- même chose pour toutes les clés étrangères qui suiveront
+    idStatsI INTEGER REFERENCES StatsInterventions, 
+    idStatsCV INTEGER REFERENCES StatsCampagneVoeux, 
     idStatsO INTEGER REFERENCES StatsOuvrages,
 	idCommission INTEGER REFERENCES CommissionScolaire,
     PRIMARY KEY (idEdition),
@@ -87,7 +86,7 @@ CREATE TABLE Auteur(
     adresse VARCHAR(256) NOT NULL,
     localisation VARCHAR(30), --ajouter contraintes de domaine (exemple: 34°42'23.0''N 33°12'34.6''E) à voir si généré automatiquement ou null ou supprimer (vu que c'est pas nous qui nous occupons d'attribuer les interventions en fonction de l'adresse)
     langues VARCHAR(30)[] NOT NULL,
-    verifie BOOLEAN NOT NULL DEFAULT FALSE, -- on passe par une fonctionnalité pour le passer à 1
+    verifie BOOLEAN NOT NULL DEFAULT TRUE, -- on passe par une fonctionnalité pour le passer à 1
     veutParticiper BOOLEAN NOT NULL DEFAULT TRUE, -- 1 par défaut car considéré comme voulant participer à la prochaine édition à l'inscription d'un auteur ; peut passer par une fonctionnalité pour passer à 0 (ou 1 plus tard)
     PRIMARY KEY (idAuteur),
     UNIQUE (nom, prenom) -- le couple nom, prénom doit être unique
@@ -115,7 +114,7 @@ CREATE TABLE Etablissement(
     mail EmailAddress UNIQUE, 
     adresse VARCHAR(256) NOT NULL,
     localisation VARCHAR(30), --ajouter contraintes de domaine (exemple: 34°42'23.0''N 33°12'34.6''E) à voir si généré automatiquement ou null ou à supprimer
-    verifie BOOLEAN NOT NULL DEFAULT FALSE,
+    verifie BOOLEAN NOT NULL DEFAULT TRUE,
     veutParticiper BOOLEAN NOT NULL DEFAULT TRUE, -- vrai par défaut (qd on inscrtit un établissement ili veut forcément participer à la prochaine édition)
     PRIMARY KEY (idEtablissement)
 );

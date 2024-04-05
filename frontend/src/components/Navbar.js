@@ -9,7 +9,7 @@ const Navbar = () => {
     try {
       await axios.get('http://localhost:3000/logout');
       document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
-      navigate('/login');
+      navigate('/');
     } catch (error) {
       console.error('Erreur lors de la déconnexion:', error);
     }
