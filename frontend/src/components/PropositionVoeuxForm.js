@@ -30,9 +30,7 @@ const VoeuxForm = ({ idEtablissement }) => {
       if (selectedEditionId) {
         try {
           const response = await axios.get(`http://localhost:3000/edition/${selectedEditionId}/ouvrages`);
-          // Vérifiez la structure de la réponse
           console.log(response.data);
-          // Assurez-vous que la propriété contenant les ouvrages est correctement nommée
           setOuvrages(response.data.ouvrages);
         } catch (error) {
           console.error('Error fetching ouvrages:', error);
