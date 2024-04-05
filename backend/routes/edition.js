@@ -78,6 +78,7 @@ router.get('/edition/:idEdition/ouvrages', async (req, res) => {
 });
 
 // TODO : transformer en procédure
+// Malheureusement j'ai tout tenté mais j'ai jamais réussi à la transformer en fonction stockée à cause du type de retour
 // Route pour récupérer les ouvrages d'un auteur spécifique avec l'édition correspondante
 router.get('/auteur/:idAuteur/ouvrages', authenticateUser, authorizeAuteur, async (req, res) => {
     const idAuteur = req.params.idAuteur;
@@ -89,6 +90,7 @@ router.get('/auteur/:idAuteur/ouvrages', authenticateUser, authorizeAuteur, asyn
             JOIN Edition e ON oe.idEdition = e.idEdition 
             WHERE o.idOuvrage IN (SELECT idOuvrage FROM Ouvrage_Auteur WHERE idAuteur = $1)
         `, [idAuteur]);
+
 
         res.status(200).json(ouvrages.rows);
     } catch (error) {

@@ -1,30 +1,3 @@
--- CREATION DES TABLES (l'ordre est important à cause de clés étrangères (la reférence d'un PK doit déjà exister))
-
--- création des domaines
-
-CREATE DOMAIN EmailAddress VARCHAR(255) 
-    CHECK (VALUE ~* '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$') NOT NULL;
-
-CREATE DOMAIN MotDePasse VARCHAR(255) CHECK (LENGTH(VALUE) >= 8) NOT NULL;
-	
-
--- création des énumérations
-
-DROP TYPE IF EXISTS EEtablissement;
-CREATE TYPE EEtablissement AS ENUM ('université', 'lycée général', 'lycée professionnel', 'collège', 'école primaire', 'école maternelle', 'médico-sociaux', 'pénitentiaire');
-
-DROP TYPE IF EXISTS EPublic;
-CREATE TYPE EPublic AS ENUM ('jeune enfant', 'enfant', 'ado', 'jeune adulte', 'adulte');
-
-DROP TYPE IF EXISTS EEtatVoeu;
-CREATE TYPE EEtatVoeu AS ENUM ('déposé', 'validé', 'refusé');
-
-DROP TYPE IF EXISTS EEtatInterv;
-CREATE TYPE EEtatInterv AS ENUM ('planifiée', 'annulée', 'remplacée');
-
-
---création des tables "statistiques"
-
 DROP TABLE IF EXISTS StatsOuvrages;
 CREATE TABLE StatsOuvrages( -- générées à la fin des inscriptions
     idStatsO SERIAL,

@@ -40,23 +40,18 @@ const AboutPage = () => {
               <ul className="flex flex-wrap justify-center gap-6 mt-4">
                   <li className="flex flex-col items-center">
                       <p className="text-lg font-bold mb-2">Célestin Sebti</p>
-                      <p className="text-lg mb-2">LinkedIn: <a href="https://www.linkedin.com/">Célestin Sebti</a></p>
                   </li>
                   <li className="flex flex-col items-center">
                       <p className="text-lg font-bold mb-2">Hugo Walter</p>
-                      <p className="text-lg mb-2">LinkedIn: <a href="https://www.linkedin.com/">Hugo Walter</a></p>
                   </li>
                   <li className="flex flex-col items-center">
                       <p className="text-lg font-bold mb-2">Gael Balloir</p>
-                      <p className="text-lg mb-2">LinkedIn: <a href="https://www.linkedin.com/">Gael Balloir</a></p>
                   </li>
                   <li className="flex flex-col items-center">
                       <p className="text-lg font-bold mb-2">Antoine Hubert</p>
-                      <p className="text-lg mb-2">LinkedIn: <a href="https://www.linkedin.com/">Antoine Hubert</a></p>
                   </li>
                   <li className="flex flex-col items-center">
                       <p className="text-lg font-bold mb-2">Tom Ciapa</p>
-                      <p className="text-lg mb-2">LinkedIn: <a href="https://www.linkedin.com/">Tom Ciapa</a></p>
                   </li>
               </ul>
           </section>
